@@ -28,7 +28,7 @@ module.exports = async function runBlockchainTest(options, testData, t) {
 
   const blockchain = new Blockchain({
     db: blockchainDB,
-    hardfork,
+    common: options.common,
     validateBlocks: validate,
     validatePow: validate,
   })
@@ -46,17 +46,17 @@ module.exports = async function runBlockchainTest(options, testData, t) {
   const vm = new VM({
     state,
     blockchain,
-    hardfork,
+    common: options.common,
   })
 
-  const genesisBlock = new Block(undefined, { hardfork })
+  const genesisBlock = new Block(undefined, { common: options.common })
 
   // set up pre-state
   await setupPreConditions(vm.stateManager._trie, testData)
 
   // create and add genesis block
   genesisBlock.header = new BlockHeader(formatBlockHeader(testData.genesisBlockHeader), {
-    hardfork,
+    common: options.common,
   })
 
   t.ok(vm.stateManager._trie.root.equals(genesisBlock.header.stateRoot), 'correct pre stateRoot')
@@ -97,7 +97,7 @@ module.exports = async function runBlockchainTest(options, testData, t) {
 
     try {
       const block = new Block(Buffer.from(raw.rlp.slice(2), 'hex'), {
-        hardfork,
+        common: options.common,
       })
 
       try {
@@ -112,7 +112,7 @@ module.exports = async function runBlockchainTest(options, testData, t) {
       // blockchain tests come with their own `pre` world state.
       // TODO: Add option to `runBlockchain` not to generate genesis state.
       vm._common.genesis().stateRoot = vm.stateManager._trie.root
-
+      
       await vm.runBlockchain()
 
       const headBlock = await vm.blockchain.getHead()
