@@ -148,7 +148,6 @@ module.exports = async function runBlockchainTest(options, testData, t) {
       await cacheDB.close()
     } catch (error) {
       await handleError(error, expectException, cacheDB)
-      return
     }
   }
 }
