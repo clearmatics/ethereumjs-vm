@@ -163,19 +163,23 @@ const normalHardforks = [
 const transitionNetworks = {
   ByzantiumToConstantinopleFixAt5: {
     byzantium: 0, 
+    constantinople: 5,
     petersburg: 5,
+    dao: null,
     finalSupportedFork: 'petersburg',
     startFork: 'byzantium'
   },
   EIP158ToByzantiumAt5: {
     spuriousDragon: 0,
     byzantium: 5,
+    dao: null,
     finalSupportedFork: 'byzantium',
     startFork: 'spuriousDragon'
   },
   FrontierToHomesteadAt5: {
     frontier: 0,
     homestead: 5,
+    dao: null,
     finalSupportedFork: 'homestead',
     startFork: 'frontier'
   },
@@ -188,6 +192,7 @@ const transitionNetworks = {
   HomesteadToEIP150At5 : {
     homestead: 0,
     tangerineWhistle: 5,
+    dao: null,
     finalSupportedFork: 'tangerineWhistle',
     startFork: 'homestead'
   }
@@ -239,13 +244,13 @@ function getCommon(network) {
     const hardforks = mainnetCommon.hardforks()
     const testHardforks = []
     for (const hf of hardforks) {
-      console.log(hf.name)
       if (mainnetCommon.gteHardfork(hf.name)) {
         // this hardfork should be activated at block 0
+        const forkBlockNumber = transitionForks[hf.name]
         testHardforks.push({
           name: hf.name,
           forkHash: hf.forkHash,
-          block: transitionForks[hf] || 0
+          block: (forkBlockNumber === null) ? null : forkBlockNumber || 0 // if forkBlockNumber is defined as null, disable it, otherwise use block number or 0 (if its undefined)
         })
       } else {
         // disable the hardfork
@@ -278,20 +283,16 @@ function getSkipTests(choices, defaultChoice) {
     choices = defaultChoice
   }
   choices = choices.toLowerCase()
-  console.log(choices)
   if (choices !== 'none') {
     let choicesList = choices.split(',')
     let all = choicesList.includes('all')
     if (all || choicesList.includes('broken')) {
-      console.log("skip broken")
       skipTests = skipTests.concat(SKIP_BROKEN)
     }
     if (all || choicesList.includes('permanent')) {
-      console.log("skip permanent")
       skipTests = skipTests.concat(SKIP_PERMANENT)
     }
     if (all || choicesList.includes('slow')) {
-      console.log("skip slow")
       skipTests = skipTests.concat(SKIP_SLOW)
     }
   }

@@ -107,7 +107,7 @@ exports.getTestsFromArgs = function (testType, onFile, args = {}) {
   if (new RegExp(`BlockchainTests`).test(testType)) {
     const forkFilter = new RegExp(`${args.forkConfig}$`)
     skipFn = (name, test) => {
-      return ((forkFilter.test(test.network) === false) || !skipTest(name, args.skipTests))
+      return ((forkFilter.test(test.network) === false) || skipTest(name, args.skipTests))
     }
   }
 
