@@ -145,6 +145,10 @@ export default class VM extends AsyncEventEmitter {
     this._emit = promisify(this.emit.bind(this))
   }
 
+  _updateOpcodes() {
+    this._opcodes = getOpcodesForHF(this._common)
+  }
+
   async init(): Promise<void> {
     if (this.isInitialized) {
       return
