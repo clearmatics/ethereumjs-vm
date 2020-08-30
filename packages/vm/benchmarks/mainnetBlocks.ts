@@ -22,9 +22,9 @@ const onAdd = async (vm: VM, block: Block, receipts: any) => {
     result.receiptRoot &&
     result.receiptRoot.toString('hex') !== block.header.receiptTrie.toString('hex')
   ) {
-    // there's something wrong here with the receipts trie. if block has receipt data we can check against the expected result of the block and the 
+    // there's something wrong here with the receipts trie. if block has receipt data we can check against the expected result of the block and the
     // reported data of the VM in order to isolate the problem
-    
+
     // check if there are receipts
     if (receipts) {
       let cumGasUsed = 0
@@ -33,13 +33,26 @@ const onAdd = async (vm: VM, block: Block, receipts: any) => {
         let cumGasUsedActual = parseInt(result.receipts[index].gasUsed.toString('hex'), 16)
         let gasUsed = cumGasUsedActual - cumGasUsed
         if (gasUsed != gasUsedExpected) {
-          console.log("[DEBUG] Transaction at index " + index + " of block " + bufferToInt(block.header.number) + " did not yield expected gas. Hash: " + receipts[index].transactionHash)
-          console.log("[DEBUG] Gas used expected: " + gasUsedExpected + ", actual: " + gasUsed + ", difference: " + (gasUsed - gasUsedExpected))
+          console.log(
+            '[DEBUG] Transaction at index ' +
+              index +
+              ' of block ' +
+              bufferToInt(block.header.number) +
+              ' did not yield expected gas. Hash: ' +
+              receipts[index].transactionHash,
+          )
+          console.log(
+            '[DEBUG] Gas used expected: ' +
+              gasUsedExpected +
+              ', actual: ' +
+              gasUsed +
+              ', difference: ' +
+              (gasUsed - gasUsedExpected),
+          )
         }
         cumGasUsed = cumGasUsedActual
       }
     }
-
 
     throw new Error('invalid receiptTrie ')
   }
