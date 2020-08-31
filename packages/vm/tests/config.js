@@ -236,7 +236,7 @@ function getCommon(network) {
     }, hfName)
   } else {
     // this is not a "default fork" network, but it is a "transition" network. we will test the VM if it transitions the right way
-    const transitionForks = transitionNetworks[network]
+    const transitionForks = transitionNetworks[network] || transitionNetworks[network.substring(0,1).toUpperCase()+network.substr(1)]
     if (!transitionForks) {
       throw(new Error("network not supported: " + network))
     }

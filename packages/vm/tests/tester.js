@@ -6,6 +6,28 @@ const config = require('./config')
 const testLoader = require('./testLoader')
 const Common = require('@ethereumjs/common').default
 
+/**
+ * Test runner 
+ * CLI arguments:
+ * --state: run state tests
+ * --blockchain: run blockchain tests
+ * --fork: fork to use for these tests
+ * --skip: comma seperated list of tests to skip. choices of: all,broken,permanent,slow. Defaults to all
+ * --runSkipped: comma seperated list of tests to skip if --skip is not set. choices of: all,broken,permanent,slow. Defaults to none
+ * --file: test file to run
+ * --test: test name to run
+ * --dir: test directory to look for tests
+ * --excludeDir: test directory to exlude from testing
+ * --testsPath: root directory of tests to look
+ * --customStateTest: run a file with a custom state test (not in test directory)
+ * --jsontrace: enable json step tracing in state tests
+ * --dist: use the compiled version of the VM
+ * --data: only run this state test if the transaction has this calldata
+ * --gas: only run this state test if the transaction has this gasLimit
+ * --value: only run this state test if the transaction has this call value
+ * --debug: enable BlockchainTests debugger (compares post state against the expected post state)
+ */
+
 function runTests() {
   let name
   if (argv.state) {
@@ -39,7 +61,7 @@ function runTests() {
   let runnerArgs = {}
   runnerArgs.forkConfigVM = FORK_CONFIG_VM
   runnerArgs.forkConfigTestSuite = FORK_CONFIG_TEST_SUITE
-  runnerArgs.common = config.getCommon(FORK_CONFIG_TEST_SUITE)
+  runnerArgs.common = config.getCommon(FORK_CONFIG_VM)
   runnerArgs.jsontrace = argv.jsontrace
   runnerArgs.dist = argv.dist
   runnerArgs.data = argv.data // GeneralStateTests
