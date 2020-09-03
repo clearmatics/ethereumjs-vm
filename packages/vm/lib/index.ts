@@ -57,7 +57,7 @@ export interface VMOpts {
   allowUnlimitedContractSize?: boolean
   /**
    * Use a [common](https://github.com/ethereumjs/ethereumjs-vm/packages/common) instance or a combination
-   * on the `chain` and `hardfork` options if you want to change the network setup 
+   * on the `chain` and `hardfork` options if you want to change the network setup
    */
   common?: Common
   /**
@@ -66,7 +66,7 @@ export interface VMOpts {
    *
    * Currently supported:
    * `EIP2537` (`beta`) - BLS12-381 precompiles ([specification](https://eips.ethereum.org/EIPS/eip-2537))
-   * 
+   *
    * Note: EIPs annotated with `beta` can change its behaviour or can be removed on minor version bumps of the VM
    */
   eips?: string[]
@@ -143,17 +143,12 @@ export default class VM extends AsyncEventEmitter {
 
     // EIPs
     if (opts.eips) {
-      const supportedEIPs = [
-        'EIP2537',
-      ]
+      const supportedEIPs = ['EIP2537']
       for (const eip of opts.eips) {
         if (supportedEIPs.includes(eip)) {
           this._activatedEIPs.push(eip)
-        }
-        else {
-          throw new Error(
-            `${eip} is not supported by the VM`
-          )
+        } else {
+          throw new Error(`${eip} is not supported by the VM`)
         }
       }
     }
