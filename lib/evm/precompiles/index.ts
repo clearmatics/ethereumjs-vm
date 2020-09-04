@@ -8,6 +8,7 @@ import { default as p6 } from './06-ecadd'
 import { default as p7 } from './07-ecmul'
 import { default as p8 } from './08-ecpairing'
 import { default as p9 } from './09-blake2f'
+import { bw6_ecadd_pc } from './bw6-ecc'
 
 interface Precompiles {
   [key: string]: PrecompileFunc
@@ -24,6 +25,9 @@ const precompiles: Precompiles = {
   '0000000000000000000000000000000000000007': p7,
   '0000000000000000000000000000000000000008': p8,
   '0000000000000000000000000000000000000009': p9,
+
+  '00000000000000000000000000000000000000c1': bw6_ecadd_pc,
+  // '00000000000000000000000000000000000000c2': bw6_ecmul_pc,
 }
 
 function getPrecompile(address: string): PrecompileFunc {
