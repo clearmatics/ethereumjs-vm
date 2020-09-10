@@ -8,6 +8,7 @@
     "dist/**/*"
   ],
   "scripts": {
+    "prepare": "npm run build:dist",
     "build:dist": "ethereumjs-config-build",
     "prepublishOnly": "npm run lint && npm run build:dist && npm run testBuildIntegrity",
     "coverage": "nyc npm run coverage:test && nyc report --reporter=lcov",
